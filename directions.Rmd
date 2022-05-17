@@ -1,0 +1,31 @@
+---
+title: "Steps for Persistence and Modeling"
+author: "Madeleine Rea"
+date: "4/7/2022"
+output: html_document
+---
+Here is a description of what steps are needed to find persistence values
+and model/plot resulting data. Each step has an attached R script file, with the exception
+of step 7 which was completed in ArcPro. 
+
+1. Masking B3 and B4 for each year by glacier extent **(masking.R)**
+
+2. NDI calculation for each year pair $((B4)+(B3)/(B4)-(B3))$ **(NDI_calc.R)**
+
+3. Make all negative values equal 0 **(con.R)**
+
+4. Abundance calculation for cell area $(NDI*1400)$ **(abundance_cellarea.R)**
+
+5. Apply breaks $(5cm^2/L)$ cell area **(breaks.R)**
+
+6. Set all positive (>0) values to 1 **(presence.R)**
+
+7. Import all presence year rasters into ArcPro and use raster calculator to add up the values by each pixel. This will result in a persistence map from 2013-2021. Each value will represent the number of years that algae has been found there. Data from this process is in the **(geopersistance/rasters)** folder. 
+
+##New folder "geopersistance" for modeling and graphing. 
+
+8. Crop the extent of the persistence map by the glacier outline extent. Cover cropped persistence raster into a spatial points dataframe. Subset the dataframe to only contain values in this collection: c(0,5,6,7,8) (i.e. persistence of 5 or more years and no observed population pixels). Import geo-spatial variable rasters. These raster where derived from a Arctic DEM mosaic of the Harding Icefield. Distance from coast was calculated using the euclidean distance tool. **(dataframe.R)**
+
+9. Plot distribution density, model using GAMs, plot predictions and
+observed data. **(plot_model.R)**
+
